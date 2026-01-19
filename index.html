@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workout Routine</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <header class="header">
+    <div class="left-header">
+      <button id="menu-toggle" aria-label="Toggle Menu" class="menu-icon">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div id="user-profile-header" class="user-profile-header">
+        <img
+          src="images/placeholder-profile.png"
+          alt="User Profile"
+          id="profile-pic-header"
+          class="profile-pic-header"
+        />
+        <span id="username-header" class="username-header">Guest</span>
+      </div>
+    </div>
+    <div id="date-theme-container" class="date-theme-container">
+      <div id="current-date" class="current-date" aria-live="polite"></div>
+      <button id="theme-toggle" aria-label="Change Theme" class="theme-icon">
+        <i class="fas fa-sun"></i>
+      </button>
+    </div>
+  </header>
+
+  <nav id="sidebar" class="sidebar" aria-label="Main Menu" hidden>
+    <ul>
+      <li><a href="#" id="link-home" tabindex="0">Home Page</a></li>
+      <li><a href="#" id="link-workout" tabindex="0">Workout Page</a></li>
+      <li><a href="#" id="link-calendar" tabindex="0">Calendar</a></li>
+      <li><a href="#" id="link-bmi" tabindex="0">BMI Calculator</a></li>
+      <li><a href="#" id="link-profile" tabindex="0">Profile</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content" tabindex="-1" class="main-content home-page">
+    <!-- Home Page Content -->
+    <section id="home-section" class="page-section">
+      <div class="quote-card" aria-label="Motivational quote">
+        <p class="quote-text"><strong>Sore today, Strong tomorrow</strong></p>
+      </div>
+      <button id="go-button" class="go-button" aria-label="Go to Workout Page">
+  <span class="go-text">Go</span>
+  <i class="fas fa-dumbbell go-spinner hidden"></i>
+  <i class="fas fa-arrow-right go-arrow"></i>
+</button>
+
+    </section>
+
+    <!-- Workout Page Content -->
+    <section id="workout-section" class="page-section hidden" aria-label="Workout Page">
+      <h2 class="page-title">Workout Routine</h2>
+      <div id="days-container" class="days-container"></div>
+    </section>
+
+    <!-- Day Detail Popup -->
+    <section id="day-detail-page" class="page-section hidden" aria-label="Day Workout Details">
+      <button id="back-to-workout" class="back-button" aria-label="Back to Workout Page">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <h2 id="day-title" class="page-title"></h2>
+      <!-- Your existing Day/Date -->
+      <div class="workout-header-top">
+        <!-- Your old progress bar - stays hidden -->
+        <div id="oldProgressContainer" style="display: none;">
+          <!-- your existing progress HTML stays here -->
+        </div>
+        
+        <!-- NEW RADIAL - visible top-right -->
+        <div class="radial-progress" id="radialProgress">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-progress" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="fluid-fill"></div>
+          <div class="progress-text">0%</div>
+        </div>
+      </div>  <!-- Properly closes workout-header-top -->
+      <div id="activities-container" class="activities-container"></div>
+    </section>
+
+    <!-- Popup for activity details -->
+    <div id="activity-popup" class="popup hidden solid-popup" role="dialog" aria-modal="true" aria-labelledby="activity-popup-title">
+      <div class="popup-content">
+        <button id="close-activity-popup" class="close-popup" aria-label="Close Activity Details">
+          &times;
+        </button>
+        <h3 id="activity-popup-title"></h3>
+        <img id="activity-image" alt="Activity image" class="activity-image" />
+        <div id="activity-reps" class="activity-info"></div>
+        <ul id="activity-instructions" class="activity-info"></ul>
+        <div class="timer" aria-label="Activity timer">
+          <span id="timer-display">00:00</span>
+          <div class="timer-buttons">
+            <button id="timer-start" aria-label="Start timer"><i class="fas fa-play"></i></button>
+            <button id="timer-stop" aria-label="Stop timer"><i class="fas fa-pause"></i></button>
+            <button id="timer-reset" aria-label="Reset timer"><i class="fas fa-rotate-left"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Page -->
+    <section id="calendar-section" class="page-section hidden" aria-label="Calendar">
+      <h2 class="page-title">Calendar</h2>
+      <div id="calendar-wrapper">
+        <header class="calendar-header">
+          <button id="prev-month" aria-label="Previous month"><i class="fas fa-chevron-left"></i></button>
+          <div id="calendar-month-year" aria-live="polite"></div>
+          <button id="next-month" aria-label="Next month"><i class="fas fa-chevron-right"></i></button>
+        </header>
+        <table id="calendar-table" class="calendar-table" role="grid" aria-labelledby="calendar-month-year">
+          <thead>
+            <tr>
+              <th scope="col">Sun</th>
+              <th scope="col">Mon</th>
+              <th scope="col">Tue</th>
+              <th scope="col">Wed</th>
+              <th scope="col">Thu</th>
+              <th scope="col">Fri</th>
+              <th scope="col">Sat</th>
+            </tr>
+          </thead>
+          <tbody id="calendar-body" role="rowgroup"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Calendar Popup (Mensural Cycle and Notes) -->
+    <div id="calendar-popup" class="popup hidden" role="dialog" aria-modal="true" aria-labelledby="calendar-popup-title">
+      <div class="popup-content calendar-popup-content">
+        <h3 id="calendar-popup-title">Date Options</h3>
+        <div id="mensural-cycle-section" class="mensural-cycle-section">
+          <button id="add-cycle-btn" class="btn-primary">Add Mensural Cycle</button>
+          <button id="remove-cycle-btn" class="btn-danger hidden">Remove Mensural Cycle</button>
+        </div>
+        <button id="open-notes-btn" class="btn-secondary">Notes</button>
+        <button id="close-calendar-popup" class="close-popup" aria-label="Close popup">&times;</button>
+      </div>
+    </div>
+
+    <!-- Notes Popup -->
+    <div id="notes-popup" class="popup hidden solid-popup" role="dialog" aria-modal="true" aria-labelledby="notes-popup-title">
+      <div class="popup-content notes-popup-content">
+        <button id="close-notes-popup" class="close-popup" aria-label="Close Notes Popup">&times;</button>
+        <textarea id="notes-textarea" placeholder="Type your notes here..."></textarea>
+        <div class="notes-buttons">
+          <button id="save-notes-btn" class="btn-primary">Save</button>
+          <button id="delete-notes-btn" class="btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Page -->
+    <section id="profile-section" class="page-section hidden" aria-label="User Profile">
+      <h2 class="page-title">User Profile</h2>
+      <form id="profile-form">
+        <div class="form-group">
+          <label for="profile-pic-input">Upload Picture:</label>
+          <input type="file" id="profile-pic-input" accept="image/*" />
+          <img id="profile-pic-preview" alt="Profile preview" class="profile-pic-preview" />
+        </div>
+        <div class="form-group">
+          <label for="profile-name">Name:</label>
+          <input type="text" id="profile-name" name="profile-name" />
+        </div>
+        <div class="form-group">
+          <label for="profile-dob">Date of Birth:</label>
+          <input type="date" id="profile-dob" name="profile-dob" />
+        </div>
+        <div class="form-group">
+          <label for="profile-height">Height (cm):</label>
+          <input type="number" id="profile-height" name="profile-height" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="profile-weight">Weight (kg):</label>
+          <input type="number" id="profile-weight" name="profile-weight" min="0" />
+        </div>
+        <div class="form-group">
+          <label for="profile-age">Age:</label>
+          <input type="number" id="profile-age" name="profile-age" min="0" max="100" />
+        </div>
+        <div class="form-group">
+          <label>Gender:</label>
+          <select id="profile-gender" name="profile-gender">
+            <option value="">Select Gender</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="profile-mobile">Mobile Number:</label>
+          <input type="tel" id="profile-mobile" name="profile-mobile" pattern="[0-9+ ]*" />
+        </div>
+        <div class="form-group">
+          <label for="profile-email">Email ID:</label>
+          <input type="email" id="profile-email" name="profile-email" />
+        </div>
+        <div class="form-group">
+          <label for="profile-goal">Goal:</label>
+          <textarea id="profile-goal" name="profile-goal" rows="3"></textarea>
+        </div>
+        <div class="form-buttons">
+          <button type="button" id="save-profile-btn" class="btn-primary">Save</button>
+          <button type="button" id="delete-profile-btn" class="btn-danger">Delete</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- BMI Calculator Page -->
+    <section id="bmi-section" class="page-section hidden" aria-label="BMI Calculator">
+      <h2 class="page-title">BMI Calculator</h2>
+      <form id="bmi-form" aria-live="polite">
+        <div class="gender-selection">
+          <label>
+            <input type="radio" name="bmi-gender" value="female" />
+            <i class="fas fa-venus gender-icon" title="Female"></i>
+          </label>
+          <label>
+            <input type="radio" name="bmi-gender" value="male" />
+            <i class="fas fa-mars gender-icon" title="Male"></i>
+          </label>
+        </div>
+        <div class="slider-group">
+          <label for="bmi-height">Height (cm): <span id="height-value">170</span></label>
+          <input type="range" id="bmi-height" name="bmi-height" min="50" max="250" value="170" class="visible-track" />
+        </div>
+        <div class="slider-group">
+          <label for="bmi-weight">Weight (kg): <span id="weight-value">70</span></label>
+          <input type="range" id="bmi-weight" name="bmi-weight" min="10" max="200" value="70" class="visible-track" />
+        </div>
+        <div class="age-group">
+          <label for="bmi-age">Age:</label>
+          <div class="age-controls">
+            <button type="button" id="age-decrease" aria-label="Decrease age">-</button>
+            <input type="number" id="bmi-age" name="bmi-age" min="0" max="100" value="25" readonly />
+            <button type="button" id="age-increase" aria-label="Increase age">+</button>
+          </div>
+        </div>
+        <button id="calculate-bmi-btn" type="button" class="btn-primary">Calculate BMI</button>
+      </form>
+    </section>
+
+    <!-- BMI Result Popup -->
+    <div id="bmi-result-popup" class="popup hidden solid-popup" role="dialog" aria-modal="true" aria-labelledby="bmi-result-title">
+      <div class="popup-content bmi-popup-content">
+        <h3 id="bmi-result-title">BMI Result</h3>
+        <p id="bmi-result-value" class="bmi-result-value"></p>
+        <p id="bmi-ranges" class="bmi-ranges"></p>
+        <button id="close-bmi-popup" class="close-popup" aria-label="Close BMI Result">&times;</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
